@@ -104,7 +104,8 @@ This API allows interaction with a library database, providing functionalities f
 - **Payload**:
   ```json
   {
-    "user_id": "integer"
+    "bookId": 20,
+    "authorId": 20
   }
   ```
 - **Response**:
