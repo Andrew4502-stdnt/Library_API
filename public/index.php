@@ -193,45 +193,5 @@ $app->delete('/book-author/delete', function (Request $request, Response $respon
     return $response;
 });
 
-// Change user password
-$app->post('/user/change-password', function (Request $request, Response $response) use ($servername, $dbusername, $dbpassword, $dbname) {
-    $data = json_decode($request->getBody());
-    $conn = getDB($servername, $dbusername, $dbpassword, $dbname);
-
-    $userid = checkToken($request, $conn);
-    if (!$userid) {
-        return $response->withStatus(401)->write(json_encode(["status" => "fail", "data" => ["title" => "Invalid Token"]]));
-    }
-
-    try {
-        // Validate the new password and username
-        if (empty($data->newPassword) || empty($data->username)) {
-            return $response->withStatus(400)->write(json_encode(["status" => "fail", "data" => ["title" => "Username and new password cannot be empty."]]));
-        }
-
-        // Retrieve the user ID based on the username
-        $stmt = $conn->prepare("SELECT userid FROM users WHERE username = :username");
-        $stmt->execute(['username' => $data->username]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$user) {
-            return $response->withStatus(404)->write(json_encode(["status" => "fail", "data" => ["title" => "User not found."]]));
-        }
-
-        // Update the user's password
-        $stmt = $conn->prepare("UPDATE users SET password = :password WHERE userid = :userid");
-        $stmt->execute(['password' => password_hash($data->newPassword, PASSWORD_DEFAULT), 'userid' => $user['userid']]);
-
-        // Token rotation
-        $newToken = generateToken($user['userid']);
-        handleToken($conn, $user['userid'], $newToken); // Handle the new token storage
-        $response->getBody()->write(json_encode(["status" => "success", "token" => $newToken]));
-    } catch (PDOException $e) {
-        $response->getBody()->write(json_encode(["status" => "fail", "data" => ["title" => $e->getMessage()]]));
-    }
-
-    return $response;
-});
-
 
 $app->run();
