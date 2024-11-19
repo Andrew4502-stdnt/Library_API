@@ -127,13 +127,43 @@ This API allows interaction with a library database, providing functionalities f
 
 ---
 
-# Notes
+# Overview
 
-- **Environment Variables**: Sensitive information such as database credentials and JWT secret keys should be stored in environment variables to enhance security.
-- **Error Handling**: The API provides meaningful error messages to help with debugging and user feedback. Ensure proper error handling is implemented on the client side.
-- **Rate Limiting**: Implement rate limiting to protect the API from abuse and ensure fair usage among all users.
-- **CORS Configuration**: Configure Cross-Origin Resource Sharing (CORS) appropriately to control which domains can access the API.
-- **Logging**: Maintain logs of API requests and errors to monitor usage patterns and troubleshoot issues effectively.
-- **Data Validation**: All incoming data should be validated to prevent SQL injection, XSS attacks, and other security vulnerabilities.
-- **Testing**: Regularly perform unit and integration tests to ensure the API endpoints function as expected and maintain reliability.
-- **Documentation**: Keep the API documentation up-to-date with any changes to endpoints, payloads, or responses to ensure developers have accurate information.
+## Libraries and Tools
+
+- **Slim Framework**: Handles API routes.
+- **JWT (JSON Web Token)**: Used for user authentication.
+
+## Database Setup
+
+- Contains database connection details such as:
+  - Server name
+  - Username
+  - Password
+- Connects to a **MySQL database**.
+
+## Main Functions
+
+1. **Connect to Database**:
+   - Establishes a connection to the database using PDO.
+2. **Create Tokens**:
+   - Generates secure tokens for user identification.
+   - Tokens expire after one hour.
+3. **Token Handling**:
+   - Likely includes functionality to validate or update tokens (not fully visible).
+
+## App Setup
+
+- Initializes the **Slim app**.
+- Prepares the app for handling incoming requests.
+
+---
+
+# Things to Note
+
+1. **Sensitive Info**:
+   - Database details and JWT secrets are hardcoded.
+   - **Recommendation**: Store sensitive information in environment variables.
+2. **Expandable**:
+   - This file provides the basic setup.
+   - Additional routes or features can be added as needed.
